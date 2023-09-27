@@ -1,0 +1,13 @@
+
+  "name": "com.defaultcompany.package",
+  "version": "0.0.1",
+  "displayName": "Display Name",
+  "description": "A package",
+
+  "author":
+  {
+	  "name": "Author",
+	  "email": "email@changethis.com",
+	  "url": "https://www.somewebsite.com"
+  }
+}
