@@ -9,13 +9,13 @@ namespace Cochise.Timers
     public class Timer : MonoBehaviour
     {
         [SerializeField]
-        private bool isCountDown = false;
-        [SerializeField]
         private float duration = 1f;
         [SerializeField]
         private UnityEvent onTimerStart;
         [SerializeField]
         private FloatEvent onTimerUpdate;
+        [SerializeField]
+        private FloatEvent onProgressUpdate;
         [SerializeField]
         private UnityEvent onTimerEnd;
 
@@ -25,27 +25,15 @@ namespace Cochise.Timers
 
         public float ElapsedTime { get => _elapsedTime; }
         public float PercentComplete { get { return _elapsedTime / duration; } }
+        public float RemainingTime { get { return duration - _elapsedTime; } }
+
 
         private void Start()
         {
             ResetTimer();
         }
 
-        private IEnumerator Countdown()
-        {
-            onTimerStart?.Invoke();
-
-            while (_elapsedTime < duration)
-            {
-                _elapsedTime += Time.deltaTime;
-                onTimerUpdate?.Invoke(duration - _elapsedTime);
-                yield return null;
-            }
-            onTimerEnd?.Invoke();
-
-        }
-
-        private IEnumerator Countup()
+        private IEnumerator SimpleTimer()
         {
             onTimerStart?.Invoke();
 
@@ -53,23 +41,29 @@ namespace Cochise.Timers
             {
                 _elapsedTime += Time.deltaTime;
                 onTimerUpdate?.Invoke(_elapsedTime);
+                onProgressUpdate?.Invoke(_elapsedTime / duration);
+
                 yield return null;
             }
-
             onTimerEnd?.Invoke();
+
         }
 
+
+        [ContextMenu("Reset Timer")]
         public void ResetTimer()
         {
-            _timer = isCountDown ? Countdown() : Countup();
+            _timer = SimpleTimer();
             _elapsedTime = 0f;
         }
 
+        [ContextMenu("Start Timer")]
         public void StartTimer()
         {
             StartCoroutine(_timer);
         }
 
+        [ContextMenu("Stop Timer")]
         public void StopTimer()
         {
             StopCoroutine(_timer);

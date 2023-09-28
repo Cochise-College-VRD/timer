@@ -1,13 +1,13 @@
 {
-  "name": "com.cochisecollege.timer",
+  "name": "com.cochisecollege.timers",
   "version": "0.0.1",
   "displayName": "Timers",
   "description": "A simple timer to allow for use of the UnityEvent system for triggering time based events.",
 
-  "author":
+  "author": 
   {
-	  "name": "Tim McDaniel",
-	  "email": "vrdprogram@cochise.edu",
-	  "url": "https://www.cochise.edu"
+    "name": "Tim McDaniel",
+    "email": "vrdprogram@cochise.edu",
+    "url": "https://www.cochise.edu"
   }
 }
