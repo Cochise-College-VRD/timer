@@ -12,29 +12,35 @@ namespace Cochise.Timers
         [SerializeField]
         private int _repeatCount = -1;
         [SerializeField]
-        private UnityEvent onLoop;
+        private UnityEvent _onLoop;
 
-        private int currentCount = 0;
+        private int _currentCount = 0;
+        private IEnumerator _loop;
 
+        [ContextMenu("Reset Loop")]
+        private void ResetLoop()
+        {
+            _loop = _repeatCount < 0 ? InfiniteLoop() : DefiniteLoop();
+            _currentCount = 0;
+        }
         [ContextMenu("Start Loop")]
         private void BeginLoop()
         {
-            if(_repeatCount < 0)
-            {
-                StartCoroutine(InfiniteLoop());
-            }
-            else
-            {
-                StartCoroutine(DefiniteLoop());
-            }
+            
+            StartCoroutine(_loop);
+        }
+
+        [ContextMenu("Stop Loop")]
+        private void Stop()
+        {
+            StopCoroutine(_loop);
         }
 
         private IEnumerator DefiniteLoop()
         {
-            Debug.Log("Event count: " + currentCount);
-            onLoop?.Invoke();
-            currentCount += 1;
-            if(currentCount < _repeatCount)
+            _onLoop?.Invoke();
+            _currentCount += 1;
+            if(_currentCount < _repeatCount)
             {
                 yield return new WaitForSeconds(_waitTime);
                 yield return StartCoroutine(DefiniteLoop());
@@ -43,8 +49,8 @@ namespace Cochise.Timers
 
         private IEnumerator InfiniteLoop()
         {
-            Debug.Log("Event count: " + currentCount);
-            onLoop?.Invoke();
+            _onLoop?.Invoke();
+            _currentCount += 1;
             yield return new WaitForSeconds(_waitTime);
             yield return StartCoroutine(InfiniteLoop());
         }
