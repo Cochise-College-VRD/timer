@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -26,7 +27,6 @@ namespace Cochise.Timers
         public float ElapsedTime { get => _elapsedTime; }
         public float PercentComplete { get { return _elapsedTime / duration; } }
         public float RemainingTime { get { return duration - _elapsedTime; } }
-
 
         private void Start()
         {
@@ -69,5 +69,20 @@ namespace Cochise.Timers
             StopCoroutine(_timer);
         }
 
+        private string FormatTime(float timeInSeconds)
+        {
+            TimeSpan time = TimeSpan.FromSeconds(timeInSeconds);
+            return string.Format("{0:00}{1:00}", time.Minutes, time.Seconds);
+        }
+
+        public string GetFormattedTimeRemaining()
+        {
+            return FormatTime(RemainingTime);
+        }
+
+        public string GetFormattedTimeElapsed()
+        {
+            return FormatTime(ElapsedTime);
+        }
     }
 }
