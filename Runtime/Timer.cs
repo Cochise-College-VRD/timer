@@ -72,7 +72,7 @@ namespace Cochise.Timers
         private string FormatTime(float timeInSeconds)
         {
             TimeSpan time = TimeSpan.FromSeconds(timeInSeconds);
-            return string.Format("{0:00}{1:00}", time.Minutes, time.Seconds);
+            return string.Format("{0:00}:{1:00}", time.Minutes, time.Seconds);
         }
 
         public string GetFormattedTimeRemaining()
